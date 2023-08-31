@@ -47,6 +47,7 @@
     interactionCanvas.addEventListener("mousedown", (e) => {
       let initialClick = _offsetForFrame(e, interactionCanvas);
       let finalClick;
+      let diff;
       let sizing = {
         width: 0,
         height: 0
@@ -59,14 +60,28 @@
 
       function onMouseMove(evt: MouseEvent) {
         finalClick = _offsetForFrame(evt, interactionCanvas);
-        let diff = _calculateCoordDiff(initialClick, finalClick);
+        diff = _calculateCoordDiff(initialClick, finalClick);
+        let xComp = initialClick.x;
+        let yComp = initialClick.y;
         sizing.width = diff.diffX;
         sizing.height = diff.diffY;
-        newBlock.updateSize(sizing.width, sizing.height)
+
+        console.log(diff, newBlock.getSize());
+        newBlock.updateSize(sizing.width, sizing.height);
+        
+        if (diff.diffX < 0) {
+          xComp = initialClick.x + diff.diffX;
+        } 
+        if (diff.diffY < 0) {
+          yComp = initialClick.y + diff.diffY;
+        }
+        newBlock.updatePosition(xComp, yComp);
       }
 
       function onMouseUp() {
-        newBlock.updateSize(sizing.width, sizing.height)
+        if (Math.abs(diff.diffY) < 11 || Math.abs(diff.diffX) < 11) {
+          newBlock.$destroy()
+        }
         document.removeEventListener("mouseup", onMouseUp);
         document.removeEventListener("mousemove", onMouseMove);
       }

@@ -6,19 +6,24 @@
   export let height: number = 0;
   export let width: number = 0;
 
+  let anchor = {
+    x: 0,
+    y: 0
+  }
+
 
   let draggable: HTMLDivElement;
   let isDragging: boolean = false;
 
-  const updatePosition = (element: HTMLDivElement, x: number, y: number) => {
-    element.style.left = x + "px";
-    element.style.top = y + "px";
+  export const updatePosition = (x: number, y: number) => {
+    draggable.style.left = x + "px";
+    draggable.style.top = y + "px";
   };
 
-  const getSize = (element: HTMLDivElement) => {
+  export const getSize = () => {
     return {
-      width: parseInt(element.style.width),
-      height: parseInt(element.style.width)
+      width: parseInt(draggable.style.width),
+      height: parseInt(draggable.style.width)
     }
   };
 
@@ -30,28 +35,16 @@
   };
 
   export const updateSize = (width: number, height: number) => {
-    let initialSize = getSize(draggable);
-    let initialPos = getPos(draggable);
-    let xComp = 0;
-    let yComp = 0;
-
-    if (width < 0) {
-      xComp = initialSize.width - width;
-      console.log('X COMP', xComp);
-    }
-    
-    if (height < 0) {
-      yComp = initialSize.height - height;
-      console.log('Y COMP', yComp);
-    }
     draggable.style.width = Math.abs(width) + "px";
     draggable.style.height = Math.abs(height) + "px";
-    updatePosition(draggable, initialPos.x - xComp, initialPos.y - yComp)
   };
 
   onMount(() => {
-    updatePosition(draggable, posX, posY);
+    updatePosition(posX, posY);
     updateSize(width, height);
+
+    anchor.x = posX;
+    anchor.y = posY;
 
     draggable.addEventListener("mousedown", (e) => {
       e.stopPropagation();
@@ -82,7 +75,6 @@
     border: none;
     text-align: center;
     width: calc(100% - 10px);
-    height: calc(100% - 10px);
     background-color: transparent;
   }
 </style>
