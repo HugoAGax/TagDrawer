@@ -48,7 +48,6 @@
 
     draggable.addEventListener("mousedown", (e) => {
       e.stopPropagation();
-      // e.preventDefault();
       document.addEventListener("mouseup", onMouseUp);
       function onMouseUp() {
         document.removeEventListener("mouseup", onMouseUp);

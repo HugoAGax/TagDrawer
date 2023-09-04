@@ -1,6 +1,7 @@
 <script>
   import RenderCanvas from "../ui/RenderCanvas.svelte";
   import InteractionFrame from "../ui/InteractionFrame.svelte";
+  import FileDrop from "../ui/FileDrop.svelte";
 </script>
 
 <main id="">
